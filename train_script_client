@@ -20,7 +20,7 @@ gcloud compute instances start "$server_instance_name"
 echo "Instance started"
 gcloud compute ssh instance-3 --command 'sh $code_path/$train_script_server $tb_output_dir $bucket_name $python_run_script'
 echo "Instance command finished"
-gcloud compute instance stop "$server_instance_name"
+gcloud compute instances stop "$server_instance_name"
 echo "Instance stopped"
 
 
