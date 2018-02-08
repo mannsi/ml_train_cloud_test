@@ -20,7 +20,7 @@ server_instance_name="instance-3"
 # Would be cleaner to check if it is running, but I think this is ok
 gcloud compute instances start "$server_instance_name"
 echo "Instance started"
-gcloud compute ssh gudbjorn.einarsson@instance-3 --command "sh $code_path/$train_script_server $tb_output_dir $bucket_name $python_run_script $code_path"
+gcloud compute ssh gudbjorn.einarsson@instance-3 --command "bash $code_path/$train_script_server $tb_output_dir $bucket_name $python_run_script $code_path"
 echo "Instance command finished"
 
 if [ "$turn_off_after" = "turnoff" ]; then
