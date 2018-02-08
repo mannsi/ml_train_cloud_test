@@ -3,10 +3,14 @@
 tb_output="$1"
 bucket_name="$2"
 python_training_file="$3"
+code_location="$4"
 
 echo "From server script. tb_output: $tb_output"
 echo "From server script. bucket_name: $bucket_name"
 echo "From server script. python_training_file: $python_training_file"
+
+# Must be in correct folder to do git pull and other stuff
+cd "$code_location"
 
 # Update code
 git pull

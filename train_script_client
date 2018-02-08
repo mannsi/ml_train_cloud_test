@@ -1,5 +1,7 @@
 #!/bin/bash
 
+turn_off_after="$1"
+
 home_path="/home/gudbjorn.einarsson"
 code_path="$home_path/ml_train_cloud_test"
 train_script_server="train_script_server"
@@ -18,9 +20,12 @@ server_instance_name="instance-3"
 # Would be cleaner to check if it is running, but I think this is ok
 gcloud compute instances start "$server_instance_name"
 echo "Instance started"
-gcloud compute ssh instance-3 --command 'sh $code_path/$train_script_server $tb_output_dir $bucket_name $python_run_script'
+gcloud compute ssh instance-3 --command 'sh $code_path/$train_script_server $tb_output_dir $bucket_name $python_run_script $code_path'
 echo "Instance command finished"
-gcloud compute instances stop "$server_instance_name"
-echo "Instance stopped"
+
+if [ "$turn_off_after" = "turnoff" ]; then
+  gcloud compute instances stop "$server_instance_name"
+  echo "Instance stopped"
+fi
 
 
