@@ -9,19 +9,14 @@ mount_script_server="mount_cloud_fs"
 tb_output_dir="$home_path/tb_output"
 bucket_name="machinelearningcloudbucket"
 python_run_script="$code_path/main.py"
-
-#echo "From client. HomePath: $home_path"
-#echo "From client: CodePath: $code_path"
-#echo "From client: TrainScriptServerName: $train_script_server"
-#echo "From client: BucketName: $bucket_name"
-#echo "From client: PythonRunScriptPath: $python_run_script"
-
 server_instance_name="instance-3"
 
 status=$(gcloud compute instances describe "$server_instance_name" --format="json" | python -c "import json,sys;obj=json.load(sys.stdin); print obj['status'];")
 
 if [ "$status" = "TERMINATED" ]; then
+  echo "Starting instance"
   gcloud compute instances start "$server_instance_name"
+  sleep 5s
   echo "Instance started"
   gcloud compute ssh gudbjorn.einarsson@instance-3 --command "bash $code_path/$mount_script_server $tb_output_dir $bucket_name"
 else
