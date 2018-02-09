@@ -14,16 +14,21 @@ server_instance_name="instance-3"
 status=$(gcloud compute instances describe "$server_instance_name" --format="json" | python -c "import json,sys;obj=json.load(sys.stdin); print obj['status'];")
 
 if [ "$status" = "TERMINATED" ]; then
-  echo "Starting instance"
   gcloud compute instances start "$server_instance_name"
-  sleep 5s
+  
+  # Run simple command on server to make sure ssh is ready
+  until gcloud compute ssh gudbjorn.einarsson@"$server_instance_name" --command "ls > /dev/null"; do
+    echo "ssh failed"
+    sleep 5s
+  done
+
   echo "Instance started"
-  gcloud compute ssh gudbjorn.einarsson@instance-3 --command "bash $code_path/$mount_script_server $tb_output_dir $bucket_name"
+  gcloud compute ssh gudbjorn.einarsson@"$server_instance_name" --command "bash $code_path/$mount_script_server $tb_output_dir $bucket_name"
 else
   echo "Instance already running"
 fi
 
-gcloud compute ssh gudbjorn.einarsson@instance-3 --command "bash $code_path/$train_script_server $tb_output_dir $python_run_script $code_path"
+gcloud compute ssh gudbjorn.einarsson@"$server_instance_name" --command "bash $code_path/$train_script_server $tb_output_dir $python_run_script $code_path"
 echo "Instance command finished"
 
 if [ "$turn_off_after" = "turnoff" ]; then

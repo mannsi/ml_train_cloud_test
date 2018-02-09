@@ -21,4 +21,9 @@ source .venv/bin/activate
 echo "About to run training script"
 python3 "$python_training_file" --tb_output "$tb_output"
 
+# Unmount the cloud fs and delete the output folder
+fusermount -u "$tb_output"
+rm -rf "$tb_output"
+
+
 

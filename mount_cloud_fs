@@ -12,4 +12,3 @@ if [ ! -d "$tb_output" ]; then
 fi
 
 gcsfuse "$bucket_name" "$tb_output"
-echo "Cloud bucket mounted"
