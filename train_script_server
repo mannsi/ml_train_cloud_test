@@ -1,12 +1,10 @@
 #!/bin/bash
 
 tb_output="$1"
-bucket_name="$2"
-python_training_file="$3"
-code_location="$4"
+python_training_file="$2"
+code_location="$3"
 
 #echo "From server script. tb_output: $tb_output"
-#echo "From server script. bucket_name: $bucket_name"
 #echo "From server script. python_training_file: $python_training_file"
 
 # Must be in correct folder to do git pull and other stuff
@@ -15,17 +13,6 @@ cd "$code_location"
 # Update code
 git pull
 echo "git pull done"
-
-# Create tb_output folder if it does not exist
-if [ ! -d "$tb_output" ]; then
-  # Control will enter here if $DIRECTORY doesn't exist.
-  echo "tb output does not exist, creating"
-  mkdir "$tb_output"
-fi
-
-# Mount cloud storage as filesystem
-gcsfuse "$bucket_name" "$tb_output"
-echo "Bucket mounted"
 
 # Source the correct python3 venv
 source .venv/bin/activate
