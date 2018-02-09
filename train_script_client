@@ -17,10 +17,11 @@ if [ "$status" = "TERMINATED" ]; then
   gcloud compute instances start "$server_instance_name"
   
   # Run simple command on server to make sure ssh is ready
+  echo "Try ssh until it works"
   until gcloud compute ssh gudbjorn.einarsson@"$server_instance_name" --command "ls > /dev/null"; do
-    echo "ssh failed"
     sleep 5s
   done
+  echo "ssh ready"
 
   echo "Instance started"
   gcloud compute ssh gudbjorn.einarsson@"$server_instance_name" --command "bash $code_path/$mount_script_server $tb_output_dir $bucket_name"
